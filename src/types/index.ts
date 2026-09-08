@@ -9,7 +9,6 @@ export interface GanpatiIdol {
   nameMr: string;
   nameEn: string;
   origin: IdolOrigin;
-  heightFeet: number;
   material: IdolMaterial;
   category: IdolCategory;
   price: number;
@@ -49,6 +48,4 @@ export interface FilterState {
   origin: string;
   category: string;
   material: string;
-  maxPrice: number;
-  height: string;
 }

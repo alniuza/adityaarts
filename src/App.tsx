@@ -11,6 +11,7 @@ import { BookingModal } from './components/BookingModal';
 import { BookingReceiptModal } from './components/BookingReceiptModal';
 import { TrackBookingModal } from './components/TrackBookingModal';
 import { AdminDashboard } from './components/AdminDashboard';
+import { SocialPamphletModal } from './components/SocialPamphletModal';
 import { ContactLocation } from './components/ContactLocation';
 import { Footer } from './components/Footer';
 
@@ -55,6 +56,7 @@ export function App() {
   const [activeReceipt, setActiveReceipt] = useState<BookingRecord | null>(null);
   const [showTrackModal, setShowTrackModal] = useState(false);
   const [showAdminModal, setShowAdminModal] = useState(false);
+  const [showPamphletModal, setShowPamphletModal] = useState(false);
 
   const handleScrollToCatalog = () => {
     document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
@@ -76,7 +78,6 @@ export function App() {
     const updated = idols.map((item) => (item.id === id ? { ...item, isAvailable } : item));
     setIdols(updated);
 
-    // Sync to MongoDB Cloud API
     try {
       await fetch(`/api/idols/${id}/availability`, {
         method: 'PATCH',
@@ -92,16 +93,17 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-950 text-slate-100 relative selection:bg-amber-500 selection:text-amber-950">
+    <div className="min-h-screen flex flex-col bg-amber-950 text-slate-100 relative selection:bg-amber-500 selection:text-amber-950 pb-16 md:pb-0">
       {/* Floating Petals Effect */}
       <FestiveEffects />
 
-      {/* Header Bar */}
+      {/* Header Bar & Sticky Mobile Action Bar */}
       <Header
         language={language}
         onLanguageChange={setLanguage}
         onOpenTrackModal={() => setShowTrackModal(true)}
         onOpenAdminModal={() => setShowAdminModal(true)}
+        onOpenPamphletModal={() => setShowPamphletModal(true)}
         isAdmin={showAdminModal}
       />
 
@@ -133,6 +135,14 @@ export function App() {
       <Footer language={language} />
 
       {/* --- MODALS --- */}
+
+      {/* Social Media Pamphlet / Poster Generator Modal */}
+      {showPamphletModal && (
+        <SocialPamphletModal
+          language={language}
+          onClose={() => setShowPamphletModal(false)}
+        />
+      )}
 
       {/* Idol Detail Specs Modal */}
       <IdolDetailModal
