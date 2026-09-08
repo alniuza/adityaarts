@@ -28,7 +28,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     return defaultDate.toISOString().split('T')[0];
   });
   const [tokenAmount, setTokenAmount] = useState<number>(0);
-  const [upiHandle, setUpiHandle] = useState('9284169779@ybl');
+  const [upiHandle, setUpiHandle] = useState('8793521139@ybl');
   const [paymentMode, setPaymentMode] = useState<'UPI' | 'Cash at Stall'>('UPI');
   const [utrNumber, setUtrNumber] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -338,9 +338,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   {/* App Handle Selector */}
                   <div className="flex justify-center gap-1 text-[10px]">
                     {[
-                      { label: 'PhonePe / GPay (@ybl)', handle: '9284169779@ybl' },
-                      { label: 'Paytm (@paytm)', handle: '9284169779@paytm' },
-                      { label: 'GPay Axis (@okbizaxis)', handle: '9284169779@okbizaxis' }
+                      { label: 'PhonePe / GPay (@ybl)', handle: '8793521139@ybl' },
+                      { label: 'Paytm (@paytm)', handle: '8793521139@paytm' },
+                      { label: 'GPay Axis (@okbizaxis)', handle: '8793521139@okbizaxis' }
                     ].map((h) => (
                       <button
                         key={h.handle}
