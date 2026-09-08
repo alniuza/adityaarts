@@ -17,7 +17,7 @@ export const SocialPamphletModal: React.FC<SocialPamphletModalProps> = ({
     window.print();
   };
 
-  const targetWebsiteUrl = "https://adityaarts-9s44k3q9n-an-ced4.vercel.app";
+  const targetWebsiteUrl = "https://adityaarts.vercel.app";
 
   const whatsappMessage = encodeURIComponent(
     `🚩 *आदित्य गणराज आर्ट्स - गणपती बुकिंग सुरु!* 🚩\n\n` +

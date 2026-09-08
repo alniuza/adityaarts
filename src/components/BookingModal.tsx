@@ -96,6 +96,26 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     const existing: BookingRecord[] = existingStr ? JSON.parse(existingStr) : [];
     localStorage.setItem('aditya_ganraj_bookings', JSON.stringify([newBooking, ...existing]));
 
+    // Auto trigger WhatsApp alert to stall owner Atul Gaikwad (9284169779)
+    const adminWhatsAppMsg = encodeURIComponent(
+      `🚩 *नवीन गणेश मूर्ती ऑनलाईन बुकिंग!* 🚩\n\n` +
+      `👤 *ग्राहक नाव:* ${newBooking.customerName}\n` +
+      `📱 *मोबाईल नंबर:* ${newBooking.phone}\n` +
+      `📍 *पत्ता:* ${newBooking.address}\n` +
+      `🗓️ *पिकअप तारीख:* ${newBooking.pickupDate}\n` +
+      `🕉️ *मूर्ती नाव:* ${newBooking.idolNameMr}\n` +
+      `🆔 *माॅडेल/ID:* ${newBooking.idolId}\n` +
+      `💰 *जमा ऑनलाईन टोकन:* ₹${newBooking.tokenAmount}\n` +
+      `💳 *पेमेंट पद्धत:* ${newBooking.paymentMode}\n` +
+      `🧾 *पावती क्र.:* ${newBooking.bookingId}\n\n` +
+      `आदित्य गणराज आर्ट्स स्टॉल नाशिक`
+    );
+    try {
+      window.open(`https://wa.me/919284169779?text=${adminWhatsAppMsg}`, '_blank');
+    } catch (e) {
+      console.log('Popups blocked');
+    }
+
     setIsSubmitting(false);
     onBookingSuccess(newBooking);
   };

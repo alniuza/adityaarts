@@ -164,7 +164,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <input
               type="password"
               maxLength={10}
-              placeholder={isMr ? 'पिन टाका (उदा. 0808)' : 'Enter PIN (e.g. 0808)'}
+              placeholder={isMr ? 'पिन टाका' : 'Enter PIN'}
               value={pinInput}
               onChange={(e) => setPinInput(e.target.value)}
               className="w-full text-center tracking-widest text-lg bg-amber-900/40 border border-amber-600/40 rounded-xl py-2.5 text-yellow-300 placeholder-amber-400/50 focus:outline-none focus:border-amber-400 font-mono"
