@@ -21,7 +21,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 }) => {
   const isMr = language === 'mr';
 
-  // PIN Authentication state
+  // PIN Authentication state - Updated default PIN to 0808
   const [pinInput, setPinInput] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [pinError, setPinError] = useState('');
@@ -76,11 +76,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const handlePinSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput === '1234' || pinInput === '9284169779') {
+    if (pinInput === '0808' || pinInput === '9284169779') {
       setIsAuthenticated(true);
       setPinError('');
     } else {
-      setPinError(isMr ? 'चुकीचा पिन! (डिफॉल्ट पिन: 1234)' : 'Incorrect PIN! (Default: 1234)');
+      setPinError(isMr ? 'चुकीचा पिन! (पिन: 0808)' : 'Incorrect PIN! (PIN: 0808)');
     }
   };
 
@@ -128,7 +128,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   // Metrics
   const totalRevenue = bookings.reduce((acc, b) => acc + b.tokenAmount, 0);
-  const totalPendingBalance = bookings.reduce((acc, b) => acc + b.balanceAmount, 0);
   const totalBookingsCount = bookings.length;
 
   const filteredBookings = bookings.filter((b) => {
@@ -165,7 +164,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <input
               type="password"
               maxLength={10}
-              placeholder={isMr ? 'पिन टाका (उदा. 1234)' : 'Enter PIN (Default: 1234)'}
+              placeholder={isMr ? 'पिन टाका (उदा. 0808)' : 'Enter PIN (e.g. 0808)'}
               value={pinInput}
               onChange={(e) => setPinInput(e.target.value)}
               className="w-full text-center tracking-widest text-lg bg-amber-900/40 border border-amber-600/40 rounded-xl py-2.5 text-yellow-300 placeholder-amber-400/50 focus:outline-none focus:border-amber-400 font-mono"
@@ -177,10 +176,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               {isMr ? 'लॉगिन करा' : 'Login'}
             </button>
           </form>
-
-          <p className="text-[10px] text-amber-400/60 font-mono">
-            {isMr ? 'पिन: 1234 किंवा 9284169779' : 'PIN: 1234 or 9284169779'}
-          </p>
         </div>
       </div>
     );
@@ -212,7 +207,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
 
         {/* Analytics Widgets Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 bg-amber-900/30 border-b border-amber-700/30 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 bg-amber-900/30 border-b border-amber-700/30 text-xs">
           <div className="bg-amber-950 p-3 rounded-xl border border-amber-600/40">
             <span className="text-amber-300 text-[10px] block">{isMr ? 'एकूण ऑनलाईन बुकिंग्स' : 'Total Bookings'}</span>
             <p className="text-xl font-black text-yellow-400 font-mono mt-0.5">{totalBookingsCount}</p>
@@ -221,11 +216,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <div className="bg-amber-950 p-3 rounded-xl border border-amber-600/40">
             <span className="text-amber-300 text-[10px] block">{isMr ? 'जमा टोकन रक्कम (UPI/Cash)' : 'Token Collected'}</span>
             <p className="text-xl font-black text-emerald-400 font-mono mt-0.5">₹{totalRevenue.toLocaleString('en-IN')}</p>
-          </div>
-
-          <div className="bg-amber-950 p-3 rounded-xl border border-amber-600/40">
-            <span className="text-amber-300 text-[10px] block">{isMr ? 'पिकअप वेळी बाकी रक्कम' : 'Pending Balance'}</span>
-            <p className="text-xl font-black text-amber-200 font-mono mt-0.5">₹{totalPendingBalance.toLocaleString('en-IN')}</p>
           </div>
 
           <div className="bg-amber-950 p-3 rounded-xl border border-amber-600/40">
@@ -255,7 +245,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 : 'border-transparent text-amber-300/70 hover:text-amber-200'
             }`}
           >
-            {isMr ? 'मूर्ती स्टॉक & किंमत' : 'Idol Inventory'} ({idols.length})
+            {isMr ? 'मूर्ती स्टॉक' : 'Idol Inventory'} ({idols.length})
           </button>
 
           <button
@@ -308,7 +298,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         <th className="p-2.5 font-bold">ID</th>
                         <th className="p-2.5 font-bold">{isMr ? 'ग्राहक & फोन' : 'Customer'}</th>
                         <th className="p-2.5 font-bold">{isMr ? 'मूर्ती नाव' : 'Idol'}</th>
-                        <th className="p-2.5 font-bold">{isMr ? 'टोकन / बाकी' : 'Token/Bal'}</th>
+                        <th className="p-2.5 font-bold">{isMr ? 'टोकन रक्कम' : 'Token'}</th>
                         <th className="p-2.5 font-bold">{isMr ? 'पिकअप तारीख' : 'Pickup Date'}</th>
                         <th className="p-2.5 font-bold">{isMr ? 'स्टेटस' : 'Status'}</th>
                         <th className="p-2.5 font-bold">{isMr ? 'ॲक्शन' : 'Action'}</th>
@@ -327,7 +317,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           </td>
                           <td className="p-2.5 font-mono">
                             <span className="text-emerald-400 font-bold">₹{b.tokenAmount}</span>
-                            <span className="text-amber-300 text-[10px] block">बाकी: ₹{b.balanceAmount}</span>
                           </td>
                           <td className="p-2.5">{b.pickupDate}</td>
                           <td className="p-2.5">
@@ -399,8 +388,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       </button>
                     </div>
                     <h4 className="text-xs font-bold text-amber-100 truncate">{isMr ? idol.nameMr : idol.nameEn}</h4>
-                    <p className="text-[10px] text-amber-300/80">{idol.origin} • {idol.heightFeet} ft • {idol.stallNo}</p>
-                    <p className="text-sm font-extrabold text-yellow-400 font-mono mt-0.5">₹{idol.price.toLocaleString('en-IN')}</p>
+                    <p className="text-[10px] text-amber-300/80">{idol.origin} • {idol.stallNo}</p>
                   </div>
                 </div>
               ))}
@@ -410,7 +398,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {/* TAB 3: Add New Idol Form */}
           {activeTab === 'add' && (
             <form onSubmit={handleAddSubmit} className="space-y-4 max-w-xl mx-auto text-xs">
-              <h4 className="text-sm font-bold text-yellow-300">{isMr ? 'नवीन गणेश मूर्ती जोडा (MongoDB Database Sync):' : 'Add New Idol Listing:'}</h4>
+              <h4 className="text-sm font-bold text-yellow-300">{isMr ? 'नवीन गणेश मूर्ती जोडा:' : 'Add New Idol Listing:'}</h4>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -436,7 +424,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-amber-300 mb-1">{isMr ? 'उगम (Origin):' : 'Origin:'}</label>
                   <select
@@ -451,22 +439,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-amber-300 mb-1">{isMr ? 'उंची (Feet):' : 'Height (ft):'}</label>
+                  <label className="block text-amber-300 mb-1">{isMr ? 'स्टॉल क्र.:' : 'Stall No:'}</label>
                   <input
-                    type="number"
-                    step="0.1"
-                    value={newIdol.heightFeet}
-                    onChange={(e) => setNewIdol({ ...newIdol, heightFeet: parseFloat(e.target.value) })}
-                    className="w-full bg-amber-900/40 border border-amber-600/40 rounded-lg p-2 text-amber-100"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-amber-300 mb-1">{isMr ? 'किंमत (₹):' : 'Price (₹):'}</label>
-                  <input
-                    type="number"
-                    value={newIdol.price}
-                    onChange={(e) => setNewIdol({ ...newIdol, price: parseInt(e.target.value) })}
+                    type="text"
+                    value={newIdol.stallNo}
+                    onChange={(e) => setNewIdol({ ...newIdol, stallNo: e.target.value })}
                     className="w-full bg-amber-900/40 border border-amber-600/40 rounded-lg p-2 text-amber-100"
                   />
                 </div>
