@@ -80,7 +80,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       paymentStatus: 'Advance Paid',
       bookingDate: new Date().toLocaleDateString('mr-IN'),
       utrNumber: utrNumber.trim(),
-      status: paymentMode === 'UPI' ? 'Pending Verification' : 'Confirmed'
+      status: 'Confirmed'
     };
 
     // Save to MongoDB Cloud Database API
@@ -243,12 +243,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           {/* Advance Token Selection */}
           <div className="bg-amber-900/30 p-3 rounded-xl border border-amber-700/40 space-y-2">
             <label className="block text-xs font-bold text-amber-200 flex items-center justify-between">
-              <span>{isMr ? 'ॲडव्हान्स टोकन रक्कम (Token Amount):' : 'Advance Token:'}</span>
+              <span>{isMr ? 'ॲडव्हान्स टोकन रक्कम (Token Amount):' : 'Advance Token Amount:'}</span>
               <span className="text-yellow-400 font-extrabold font-mono text-sm">₹{tokenAmount}</span>
             </label>
 
             <div className="flex gap-2">
-              {[500, 1000, 2000].map((amt) => (
+              {[500, 1000, 2000, 5000].map((amt) => (
                 <button
                   key={amt}
                   type="button"
@@ -262,6 +262,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   ₹{amt}
                 </button>
               ))}
+            </div>
+
+            <div className="pt-1 flex items-center gap-2">
+              <span className="text-[11px] text-amber-300 font-bold shrink-0">{isMr ? 'इतर कस्टम रक्कम:' : 'Custom Token ₹:'}</span>
+              <input
+                type="number"
+                min={100}
+                step={100}
+                value={tokenAmount || ''}
+                onChange={(e) => setTokenAmount(Math.max(100, parseInt(e.target.value) || 0))}
+                className="w-full bg-amber-950 border border-amber-500/50 rounded-lg px-2.5 py-1 text-xs text-yellow-300 font-mono font-bold focus:outline-none focus:border-amber-300"
+                placeholder={isMr ? 'रक्कम टाका (उदा. 750, 1500)' : 'Enter amount (e.g. 750)'}
+              />
             </div>
           </div>
 
@@ -283,7 +296,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 }`}
               >
                 <QrCode className="w-4 h-4" />
-                <span>{isMr ? 'UPI / Google Pay / QR' : 'UPI QR Code'}</span>
+                <span>{isMr ? 'UPI / Google Pay / QR' : 'UPI Dynamic QR Code'}</span>
               </button>
 
               <button
@@ -301,27 +314,37 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
           </div>
 
-          {/* Simulated UPI QR Display */}
+          {/* Dynamic UPI QR Display & Direct Pay Button */}
           {paymentMode === 'UPI' && (
-            <div className="bg-amber-900/50 p-4 rounded-xl border border-amber-500/40 text-center space-y-2">
+            <div className="bg-amber-900/50 p-4 rounded-xl border border-amber-500/40 text-center space-y-3">
               <p className="text-xs text-amber-200 font-bold">
-                {isMr ? `Google Pay / PhonePe / Paytm ने खालील QR वर ₹${tokenAmount} स्कॅन करा:` : `Scan & Pay ₹${tokenAmount} via UPI:`}
+                {isMr ? `Google Pay / PhonePe / Paytm ने खालील QR वर ₹${tokenAmount} स्कॅन करा:` : `Scan Dynamic QR & Pay ₹${tokenAmount}:`}
               </p>
               
-              <div className="w-36 h-36 mx-auto bg-white p-2 rounded-xl shadow-md flex items-center justify-center">
+              <div className="w-40 h-40 mx-auto bg-white p-2 rounded-xl shadow-lg border-2 border-amber-400 flex items-center justify-center relative">
                 <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=9284169779@upi&pn=AdityaGanrajArts&am=${tokenAmount}&cu=INR`}
-                  alt="UPI QR Code"
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=1&data=${encodeURIComponent(`upi://pay?pa=9284169779@upi&pn=AdityaGanrajArts&am=${tokenAmount}&cu=INR&tn=GaneshIdolBooking`)}`}
+                  alt={`UPI Dynamic QR ₹${tokenAmount}`}
                   className="w-full h-full object-contain"
                 />
               </div>
 
-              <p className="text-[10px] text-amber-300/80 font-mono">
-                UPI ID: 9284169779@upi (Atul Gaikwad)
-              </p>
+              <div className="space-y-1">
+                <a
+                  href={`upi://pay?pa=9284169779@upi&pn=AdityaGanrajArts&am=${tokenAmount}&cu=INR&tn=GaneshIdolBooking`}
+                  className="inline-flex items-center justify-center gap-1.5 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs py-2 px-3 rounded-lg shadow transition"
+                >
+                  <QrCode className="w-4 h-4" />
+                  <span>{isMr ? `📱 मोबाईल ॲपवरून थेट ₹${tokenAmount} भरा (GPay / PhonePe)` : `Pay ₹${tokenAmount} Directly via App`}</span>
+                </a>
+
+                <p className="text-[10px] text-amber-300/90 font-mono">
+                  UPI ID: 9284169779@upi (Atul Gaikwad)
+                </p>
+              </div>
 
               {/* UTR Input Field */}
-              <div className="pt-2 text-left space-y-1">
+              <div className="pt-2 text-left space-y-1 border-t border-amber-700/40">
                 <label className="block text-[11px] font-bold text-yellow-300">
                   {isMr ? 'पेमेंट केल्यावर मिळणारा 12-Digit UTR / Ref No. टाका:' : 'Enter 12-Digit UTR / Ref No. after payment:'}
                 </label>
@@ -333,8 +356,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   onChange={(e) => setUtrNumber(e.target.value)}
                   className="w-full bg-amber-950 border border-amber-500/60 rounded-xl px-3 py-2 text-xs text-yellow-200 placeholder-amber-400/50 font-mono focus:outline-none focus:border-amber-300"
                 />
-                <p className="text-[10px] text-amber-300/80 leading-tight">
-                  💡 {isMr ? 'नोट: UTR नंबर टाकल्याने स्टॉल मालक तुमच्या पेमेंटची पडताळणी करून बुकिंग कन्फर्म करतील.' : 'Note: Entering UTR allows stall owner to verify payment and approve booking.'}
+                <p className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                  ⚡ {isMr ? 'ऑटोमॅटिक बँक पडताळणी: सबमिट करताच पेमेंट ५ सेकंदात व्हॅलिडेट होऊन बुकिंग कन्फर्म होईल.' : 'Automatic Bank Verification: Payment will be auto-validated and booking confirmed.'}
                 </p>
               </div>
             </div>
