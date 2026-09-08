@@ -51,11 +51,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       return;
     }
 
-    if (paymentMode === 'UPI' && (!utrNumber.trim() || utrNumber.trim().length < 6)) {
-      setErrorMsg(isMr ? 'कृपया तुमच्या पेमेंटचा १२ अंकी UTR / Ref ID नंबर टाका.' : 'Please enter 12-digit UTR / Ref ID number.');
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -366,13 +361,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   />
                 </div>
 
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <a
                     href={`upi://pay?pa=${upiHandle}&pn=AdityaGanrajArts&am=${tokenAmount}&cu=INR&tn=GaneshIdolBooking`}
-                    className="inline-flex items-center justify-center gap-1.5 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs py-2.5 px-3 rounded-xl shadow transition"
+                    className="inline-flex items-center justify-center gap-2 w-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:to-emerald-400 text-white font-black text-xs py-3 px-4 rounded-xl shadow-lg transition transform active:scale-95 border border-emerald-300/40"
                   >
-                    <QrCode className="w-4 h-4" />
-                    <span>{isMr ? `📱 मोबाईल ॲपवरून थेट ₹${tokenAmount} भरा (GPay / PhonePe)` : `Pay ₹${tokenAmount} Directly via App`}</span>
+                    <QrCode className="w-4 h-4 shrink-0" />
+                    <span>{isMr ? `🚀 Google Pay / PhonePe ने थेट ₹${tokenAmount} भरा (Pay Now)` : `Pay ₹${tokenAmount} via GPay/PhonePe App`}</span>
                   </a>
 
                   <p className="text-[10px] text-amber-300/90 font-mono">
@@ -380,19 +375,22 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   </p>
                 </div>
 
-                {/* UTR Input Field */}
+                {/* Optional UTR Input Field */}
                 <div className="pt-2 text-left space-y-1 border-t border-amber-700/40">
-                  <label className="block text-[11px] font-bold text-yellow-300">
-                    {isMr ? 'पेमेंट केल्यावर मिळणारा 12-Digit UTR / Ref No. टाका:' : 'Enter 12-Digit UTR / Ref No. after payment:'}
+                  <label className="block text-[11px] font-bold text-amber-300">
+                    {isMr ? 'UTR / Ref No. (ऐच्छिक - Optional):' : 'UTR / Ref No. (Optional):'}
                   </label>
                   <input
                     type="text"
                     maxLength={18}
-                    placeholder={isMr ? 'उदा. 423812345678 (GPay / PhonePe / Paytm)' : 'e.g. 423812345678'}
+                    placeholder={isMr ? 'उदा. 423812345678 (टाकल्यास लगेच व्हॅलिडेट होईल)' : 'e.g. 423812345678'}
                     value={utrNumber}
                     onChange={(e) => setUtrNumber(e.target.value)}
                     className="w-full bg-amber-950 border border-amber-500/60 rounded-xl px-3 py-2 text-xs text-yellow-200 placeholder-amber-400/50 font-mono focus:outline-none focus:border-amber-300"
                   />
+                  <p className="text-[10px] text-emerald-400 font-bold">
+                    ✨ {isMr ? 'सबमिट करताच बुकिंग ऑटोमॅटिकली कन्फर्म होऊन पावती मिळेल!' : 'Booking will be automatically confirmed on submit!'}
+                  </p>
                 </div>
               </div>
             )
