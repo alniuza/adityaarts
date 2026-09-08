@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Raw large PDF source file (>100MB)
+*.pdf
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
