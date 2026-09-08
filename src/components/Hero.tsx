@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Calendar, MessageCircle, ArrowDown, MapPin, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Calendar, MessageCircle, MapPin, CheckCircle2, ChevronRight } from 'lucide-react';
 import { Language } from '../types';
 
 interface HeroProps {
@@ -14,10 +14,26 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
   // Ganesh Chaturthi countdown calculation
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
+  // Hero carousel image auto-slide using extracted catalog photos
+  const heroImages = [
+    { src: '/idols/murti_page_1.jpg', titleMr: 'पेण लालबागचा राजा स्पेशल (माॅडेल #1)', titleEn: 'Pen Lalbaugcha Raja Special (#1)' },
+    { src: '/idols/murti_page_2.jpg', titleMr: 'नगर श्रीमंत दगडूशेठ हलवाई (माॅडेल #2)', titleEn: 'Ahmednagar Dagdusheth Style (#2)' },
+    { src: '/idols/murti_page_3.jpg', titleMr: 'चिंतामणी पेण विशेष मूर्ती (माॅडेल #3)', titleEn: 'Pen Chintamani Edition (#3)' },
+    { src: '/idols/murti_page_6.jpg', titleMr: 'शाही पेशवाई सुवर्ण सिंहासन (माॅडेल #6)', titleEn: 'Shahi Peshwai Gold Throne (#6)' }
+  ];
+
+  const [activeImgIdx, setActiveImgIdx] = useState(0);
+
   useEffect(() => {
-    // Standard target date for festival celebration preview
+    const slideInterval = setInterval(() => {
+      setActiveImgIdx((prev) => (prev + 1) % heroImages.length);
+    }, 4000);
+    return () => clearInterval(slideInterval);
+  }, []);
+
+  useEffect(() => {
     const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 14); // 14 days countdown simulator
+    targetDate.setDate(targetDate.getDate() + 14);
 
     const updateTimer = () => {
       const now = new Date().getTime();
@@ -60,7 +76,7 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-red-950 to-amber-900 text-amber-300 border border-amber-500/40 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold shadow-lg shadow-amber-950/50">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 -ml-4" />
-              <span>{isMr ? 'बुकिंग सुरु आहे! (Booking Open)' : 'OFFICIAL BOOKING OPEN!'}</span>
+              <span>{isMr ? '७३ मूळ गणेश मूर्ती बुकिंग सुरु! (PDF Catalog Active)' : '73 ORIGINAL MURTI CATALOG LIVE!'}</span>
             </div>
 
             {/* Main Title */}
@@ -70,14 +86,14 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
                   <>
                     <span className="text-gold-gradient block">आदित्य गणराज आर्ट्स</span>
                     <span className="text-2xl sm:text-4xl text-amber-200 block font-bold mt-1">
-                      पेन व नगर येथील आकर्षक गणेश मूर्ती
+                      पेन व नगर येथील ७३ आकर्षक गणेश मूर्ती
                     </span>
                   </>
                 ) : (
                   <>
                     <span className="text-gold-gradient block">Aditya Ganraj Arts</span>
                     <span className="text-2xl sm:text-4xl text-amber-200 block font-bold mt-1">
-                      Pen & Ahmednagar Attractive Ganesh Idols
+                      73 Authentic Pen & Ahmednagar Ganesh Idols
                     </span>
                   </>
                 )}
@@ -88,8 +104,8 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
             <div className="bg-amber-950/80 border-l-4 border-amber-500 p-4 rounded-r-xl text-amber-200/90 text-sm sm:text-base leading-relaxed backdrop-blur shadow-inner">
               <p>
                 {isMr 
-                  ? 'आमच्याकडे पेन (Pen) आणि नगर (Ahmednagar) येथील नामांकित कारागिरांच्या सुबक, टिकाऊ व सुंदर रंगसंगतीच्या गणेश मूर्ती योग्य दरात उपलब्ध आहेत. आजच आपली आवडती मूर्ती ॲडव्हान्स टोकन देऊन बुक करा!' 
-                  : 'We offer authentic, durable, and exquisitely painted Ganesh idols crafted by master artisans of Pen & Ahmednagar at reasonable prices. Reserve your favorite idol today with advance token!'}
+                  ? 'आमच्याकडे पेन (Pen) आणि नगर (Ahmednagar) येथील नामांकित कारागिरांच्या सुबक, टिकाऊ व सुंदर रंगसंगतीच्या ७३ गणेश मूर्ती योग्य दरात उपलब्ध आहेत. आजच तुमची मूर्ती ५०० रू. टोकन देऊन बुक करा!' 
+                  : 'Explore 73 original Ganesh idols handcrafted by master artisans of Pen & Ahmednagar at reasonable rates. Reserve your Murti today with ₹500 advance token!'}
               </p>
             </div>
 
@@ -97,15 +113,15 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs sm:text-sm font-medium text-amber-200">
               <div className="flex items-center gap-1.5 bg-amber-900/40 p-2 rounded-lg border border-amber-600/20">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{isMr ? '100% टिकाऊ रंग' : 'Durable Colors'}</span>
+                <span>{isMr ? '७३ मूळ फोटो कॅटलॉग' : '73 PDF Photos'}</span>
               </div>
               <div className="flex items-center gap-1.5 bg-amber-900/40 p-2 rounded-lg border border-amber-600/20">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{isMr ? 'सुरक्षित पॅकिंग' : 'Safe Packaging'}</span>
+                <span>{isMr ? 'सुरक्षित पॅकिंग facility' : 'Safe Box Packaging'}</span>
               </div>
               <div className="flex items-center gap-1.5 bg-amber-900/40 p-2 rounded-lg border border-amber-600/20">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>{isMr ? 'शाडू व POP मूर्ती' : 'Shadu & POP'}</span>
+                <span>{isMr ? 'शाडू माती & POP मूर्ती' : 'Shadu & POP'}</span>
               </div>
             </div>
 
@@ -116,7 +132,7 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
                 className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-amber-950 font-black px-6 py-3.5 rounded-xl shadow-xl shadow-amber-600/30 text-sm sm:text-base transition transform hover:-translate-y-0.5 active:translate-y-0"
               >
                 <Sparkles className="w-5 h-5 text-amber-950 fill-amber-950" />
-                <span>{isMr ? 'मूर्ती पहा व बुक करा' : 'Browse & Book Idol'}</span>
+                <span>{isMr ? '७३ मूर्ती पहा व बुक करा' : 'Browse 73 Idols & Book'}</span>
               </button>
 
               <a
@@ -140,7 +156,7 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
 
           </div>
 
-          {/* Right Column: Hero Visual Card + Countdown */}
+          {/* Right Column: Hero Real Murti Carousel Card */}
           <div className="lg:col-span-5 flex flex-col items-center">
             
             {/* Main Visual Poster Card */}
@@ -151,26 +167,44 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
                 <div className="flex items-center justify-between text-amber-300 text-sm font-bold border-b border-amber-600/30 pb-2">
                   <span>🚩 नाशिक स्टॉल</span>
                   <span className="text-gold-gradient font-black">अतुल गायकवाड</span>
-                  <span>स्टॉल नं. A-1</span>
+                  <span>73 {isMr ? 'मूर्ती' : 'Idols'}</span>
                 </div>
 
-                {/* Idol Image Frame */}
+                {/* Real Extracted Murti Image Carousel Frame */}
                 <div className="relative overflow-hidden rounded-lg aspect-square border-2 border-amber-500/50 shadow-inner group">
                   <img
-                    src="https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&q=80&w=800"
-                    alt="Ganpati Murti"
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                    src={heroImages[activeImgIdx].src}
+                    alt={isMr ? heroImages[activeImgIdx].titleMr : heroImages[activeImgIdx].titleEn}
+                    className="w-full h-full object-cover transition duration-700 ease-in-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-amber-950 via-transparent to-transparent opacity-80" />
                   
+                  {/* Badge */}
+                  <div className="absolute top-3 right-3 bg-red-700 text-amber-100 text-[10px] font-bold px-2 py-0.5 rounded shadow border border-red-500/40">
+                    PDF {isMr ? 'कॅटलॉग फोटो' : 'Catalog Photo'}
+                  </div>
+
                   <div className="absolute bottom-3 left-3 right-3 text-left">
-                    <span className="bg-red-700/90 text-amber-100 text-[10px] uppercase font-bold px-2 py-0.5 rounded shadow">
-                      {isMr ? 'पेन ओरिजिनल डिझाईन' : 'Pen Original Design'}
+                    <span className="bg-amber-500 text-amber-950 text-[10px] uppercase font-bold px-2 py-0.5 rounded shadow">
+                      {isMr ? 'पेन व नगर मूळ फोटो' : 'Pen & Ahmednagar Real Murti'}
                     </span>
-                    <p className="text-lg font-extrabold text-amber-100 mt-0.5">
-                      {isMr ? 'लालबागचा राजा & दगडूशेठ स्पेशल' : 'Lalbaug & Dagdusheth Special'}
+                    <p className="text-base font-extrabold text-amber-100 mt-0.5">
+                      {isMr ? heroImages[activeImgIdx].titleMr : heroImages[activeImgIdx].titleEn}
                     </p>
                   </div>
+                </div>
+
+                {/* Carousel Indicator Dots */}
+                <div className="flex justify-center gap-1.5">
+                  {heroImages.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveImgIdx(i)}
+                      className={`h-2 rounded-full transition-all ${
+                        activeImgIdx === i ? 'w-6 bg-yellow-400' : 'w-2 bg-amber-800'
+                      }`}
+                    />
+                  ))}
                 </div>
 
                 {/* Countdown Box */}
@@ -191,7 +225,7 @@ export const Hero: React.FC<HeroProps> = ({ language, onBrowseClick, onLocationC
                     </div>
                     <div className="bg-amber-950 p-1.5 rounded border border-amber-500/30">
                       <span className="block text-lg font-black text-yellow-400 leading-none">{timeLeft.minutes}</span>
-                      <span className="text-[10px] text-amber-300">{isMr ? 'मिां' : 'Mins'}</span>
+                      <span className="text-[10px] text-amber-300">{isMr ? 'मिनिटे' : 'Mins'}</span>
                     </div>
                     <div className="bg-amber-950 p-1.5 rounded border border-amber-500/30">
                       <span className="block text-lg font-black text-yellow-400 leading-none">{timeLeft.seconds}</span>
