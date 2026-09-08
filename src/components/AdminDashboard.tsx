@@ -80,7 +80,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       setIsAuthenticated(true);
       setPinError('');
     } else {
-      setPinError(isMr ? 'चुकीचा पिन! (पिन: 0808)' : 'Incorrect PIN! (PIN: 0808)');
+      setPinError(isMr ? 'चुकीचा पिन! कृपया बरोबर पिन टाका.' : 'Incorrect PIN! Please try again.');
     }
   };
 
