@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Printer, Share2, Download, Phone, MapPin, Sparkles } from 'lucide-react';
+import { X, Printer, Share2, Download, Phone, MapPin, Sparkles, QrCode } from 'lucide-react';
 import { Language } from '../types';
 
 interface SocialPamphletModalProps {
@@ -17,13 +17,15 @@ export const SocialPamphletModal: React.FC<SocialPamphletModalProps> = ({
     window.print();
   };
 
+  const targetWebsiteUrl = "https://adityaarts-9s44k3q9n-an-ced4.vercel.app";
+
   const whatsappMessage = encodeURIComponent(
     `🚩 *आदित्य गणराज आर्ट्स - गणपती बुकिंग सुरु!* 🚩\n\n` +
     `पेन व नगर येथील अतिशय सुबक व आकर्षक गणेश मूर्ती बुकिंगसाठी आजच भेट द्या:\n` +
     `📍 *पत्ता:* पोलीस ट्रेनिंग सेंटरच्या समोर (PTC), शॉपर्स स्टॉप शेजारी, त्र्यंबक रोड, नाशिक.\n` +
     `📞 *संपर्क:* अतुल गायकवाड (9284169779 / 7720879798)\n\n` +
     `ऑनलाईन मूर्ती पाहण्यासाठी व बुकिंग करण्यासाठी खालील लिंकवर क्लिक करा:\n` +
-    `https://adityaarts-9s44k3q9n-an-ced4.vercel.app`
+    `${targetWebsiteUrl}`
   );
 
   return (
@@ -47,7 +49,7 @@ export const SocialPamphletModal: React.FC<SocialPamphletModalProps> = ({
         {/* Printable / Shareable Poster Container */}
         <div className="p-4 overflow-y-auto space-y-4 text-amber-100 print:text-black print:p-4 print:overflow-visible">
           
-          {/* Main Visual Poster Image */}
+          {/* Main Visual Poster Image with Real QR Code */}
           <div className="relative rounded-xl overflow-hidden border-2 border-amber-500/80 shadow-2xl group print:border-none">
             <img
               src="/aditya_ganraj_arts_flyer.jpg"
@@ -56,11 +58,41 @@ export const SocialPamphletModal: React.FC<SocialPamphletModalProps> = ({
             />
           </div>
 
+          {/* Dedicated Scannable QR Code Box */}
+          <div className="bg-amber-900/60 p-3.5 rounded-xl border border-amber-500/40 flex items-center justify-between gap-3 text-xs print:bg-gray-100">
+            <div className="space-y-1">
+              <span className="text-yellow-300 font-extrabold flex items-center gap-1 text-xs">
+                <QrCode className="w-4 h-4 text-amber-400" />
+                <span>{isMr ? 'ऑनलाईन बुकिंग QR कोड (१००% स्कॅन चालू):' : 'Scannable Website Booking QR Code:'}</span>
+              </span>
+              <p className="text-[11px] text-amber-200/90 leading-tight">
+                {isMr ? 'कॅमेऱ्याने स्कॅन करून ऑनलाईन ७३ मूर्ती पहा व बुक करा:' : 'Scan with mobile camera to view 73 idols & book:'}
+              </p>
+              <a
+                href={targetWebsiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] text-yellow-300 hover:underline font-mono block font-bold truncate"
+              >
+                {targetWebsiteUrl}
+              </a>
+            </div>
+
+            <div className="bg-white p-1.5 rounded-lg border-2 border-amber-400 shrink-0 text-center shadow-md">
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=1&data=${encodeURIComponent(targetWebsiteUrl)}`}
+                alt="100% Scannable Website QR Code"
+                className="w-20 h-20 object-contain"
+              />
+              <span className="text-[8px] text-gray-900 font-extrabold block mt-0.5">SCAN TO BOOK</span>
+            </div>
+          </div>
+
           {/* Quick Caption Box */}
-          <div className="bg-amber-900/40 p-3 rounded-xl border border-amber-700/40 text-xs space-y-1 print:hidden">
+          <div className="bg-amber-900/30 p-3 rounded-xl border border-amber-700/40 text-xs space-y-1 print:hidden">
             <span className="text-[10px] text-amber-400 font-bold uppercase">{isMr ? 'सोशल मीडिया कॅप्शन (WhatsApp/Instagram Text):' : 'Social Media Caption:'}</span>
             <p className="text-amber-200/90 leading-relaxed font-mono text-[11px]">
-              🚩 आदित्य गणराज आर्ट्स - पेन व नगर येथील सुबक गणेश मूर्ती ऑनलाईन बुकिंग सुरु! 📞 अतुल गायकवाड: 9284169779 / 7720879798 📍 नाशिक त्र्यंबक रोड
+              🚩 आदित्य गणराज आर्ट्स - पेन व नगर येथील सुबक गणेश मूर्ती ऑनलाईन बुकिंग सुरु! 📞 अतुल गायकवाड: 9284169779 / 7720879798 📍 नाशिक त्र्यंबक रोड {targetWebsiteUrl}
             </p>
           </div>
 
