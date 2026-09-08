@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { GanpatiIdol, Language, FilterState } from '../types';
-import { Search, Filter, Sparkles, CheckCircle2, ChevronRight, Eye, Tag } from 'lucide-react';
+import { Search, Filter, Sparkles, CheckCircle2, ChevronRight, Eye } from 'lucide-react';
 
 interface CatalogProps {
   idols: GanpatiIdol[];
@@ -22,7 +22,7 @@ export const Catalog: React.FC<CatalogProps> = ({
     origin: 'All',
     category: 'All',
     material: 'All',
-    maxPrice: 10000,
+    maxPrice: 100000,
     height: 'All'
   });
 
@@ -48,9 +48,6 @@ export const Catalog: React.FC<CatalogProps> = ({
       const matchesMaterial =
         filters.material === 'All' || idol.material.includes(filters.material);
 
-      // Price
-      const matchesPrice = idol.price <= filters.maxPrice;
-
       // Height
       let matchesHeight = true;
       if (filters.height === 'small') matchesHeight = idol.heightFeet <= 1.5;
@@ -62,7 +59,6 @@ export const Catalog: React.FC<CatalogProps> = ({
         matchesOrigin &&
         matchesCategory &&
         matchesMaterial &&
-        matchesPrice &&
         matchesHeight
       );
     });
@@ -79,12 +75,12 @@ export const Catalog: React.FC<CatalogProps> = ({
             <span>{isMr ? 'गणेश मूर्ती कॅटलॉग (Book Online)' : 'EXPLORE GANESH IDOLS'}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-gold-gradient">
-            {isMr ? 'पेन व नगर येथील आकर्षक गणेश मूर्ती' : 'Pen & Ahmednagar Exclusive Idols'}
+            {isMr ? 'पेन व नगर येथील ७३ सुबक गणेश मूर्ती' : 'Pen & Ahmednagar Exclusive Idols'}
           </h2>
           <p className="text-amber-200/80 text-sm sm:text-base">
             {isMr
-              ? 'तुमच्या पसंतीची मूर्ती निवडा, आकार, रंगसंगती तपासा आणि ५०० रू. टोकन भरून ऑनलाईन बुक करा.'
-              : 'Filter by origin, height & material. Reserve instantly with ₹500 advance token.'}
+              ? 'तुमच्या पसंतीची मूर्ती निवडा, आकार, रंगसंगती तपासा आणि टोकन भरून ऑनलाईन बुक करा.'
+              : 'Filter by origin, height & material. Reserve your idol online with advance token.'}
           </p>
         </div>
 
@@ -99,7 +95,7 @@ export const Catalog: React.FC<CatalogProps> = ({
               <Search className="w-5 h-5 text-amber-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder={isMr ? 'मूर्तीचे नाव किंवा कोड शोधा... (उदा. लालबाग, चिंतामणी, GAN-101)' : 'Search idol by name or code...'}
+                placeholder={isMr ? 'मूर्तीचे नाव किंवा माॅडेल शोधा... (उदा. लालबाग, माॅडेल #5)' : 'Search idol by name or model number...'}
                 value={filters.searchQuery}
                 onChange={(e) => setFilters({ ...filters, searchQuery: e.target.value })}
                 className="w-full bg-amber-900/40 text-amber-100 placeholder-amber-400/60 pl-11 pr-4 py-3 rounded-xl border border-amber-600/40 focus:outline-none focus:border-amber-400 text-sm"
@@ -196,7 +192,7 @@ export const Catalog: React.FC<CatalogProps> = ({
                     origin: 'All',
                     category: 'All',
                     material: 'All',
-                    maxPrice: 10000,
+                    maxPrice: 100000,
                     height: 'All'
                   })
                 }
@@ -296,20 +292,15 @@ export const Catalog: React.FC<CatalogProps> = ({
                     </span>
                   </div>
 
-                  {/* Price & Booking Action */}
+                  {/* Booking Action without prices */}
                   <div className="pt-3 border-t border-amber-700/30 flex items-center justify-between">
                     <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl font-black text-yellow-400">
-                          ₹{idol.price.toLocaleString('en-IN')}
-                        </span>
-                        <span className="text-xs text-amber-400/60 line-through">
-                          ₹{idol.originalPrice.toLocaleString('en-IN')}
-                        </span>
-                      </div>
-                      <p className="text-[10px] text-emerald-400 font-semibold">
-                        {isMr ? 'ॲडव्हान्स टोकन: ₹५००' : 'Advance Token: ₹500'}
-                      </p>
+                      <span className="text-xs text-amber-300 font-semibold block">
+                        {isMr ? 'बुकिंग स्टेटस:' : 'Booking Status:'}
+                      </span>
+                      <span className="text-xs text-emerald-400 font-bold">
+                        {isMr ? 'टोकन देऊन बुक करा' : 'Reserve with Token'}
+                      </span>
                     </div>
 
                     <div className="flex items-center gap-2">
@@ -325,7 +316,7 @@ export const Catalog: React.FC<CatalogProps> = ({
                         onClick={() => onBookIdol(idol)}
                         className="flex items-center gap-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-amber-950 font-extrabold px-3.5 py-2 rounded-lg text-xs shadow-md transition transform active:scale-95"
                       >
-                        <span>{isMr ? 'बुकिंग करा' : 'Book Now'}</span>
+                        <span>{isMr ? 'आताच बुक करा' : 'Book Now'}</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </button>
                     </div>

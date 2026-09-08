@@ -91,21 +91,13 @@ export const IdolDetailModal: React.FC<IdolDetailModalProps> = ({
                 </div>
               </div>
 
-              {/* Price & Advance Token */}
-              <div className="bg-gradient-to-r from-amber-900/60 to-red-950/60 rounded-xl p-3.5 border border-amber-500/40">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-xs text-amber-300">{isMr ? 'एकूण किंमत:' : 'Total Price:'}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-black text-yellow-400">
-                      ₹{idol.price.toLocaleString('en-IN')}
-                    </span>
-                    <span className="text-xs text-amber-400/60 line-through">
-                      ₹{idol.originalPrice.toLocaleString('en-IN')}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-[11px] text-emerald-400 font-bold mt-1 text-right">
-                  {isMr ? 'ॲडव्हान्स टोकन ऑनलाईन: ₹५०० मात्र' : 'Book now with ₹500 advance token'}
+              {/* Booking Token Info without price */}
+              <div className="bg-gradient-to-r from-amber-900/60 to-red-950/60 rounded-xl p-3.5 border border-amber-500/40 text-center">
+                <p className="text-xs text-yellow-300 font-bold">
+                  {isMr ? 'ॲडव्हान्स टोकन ऑनलाईन भरून मूर्ती बुक करा' : 'Reserve your murti online with advance token'}
+                </p>
+                <p className="text-[11px] text-amber-200/90 mt-1">
+                  {isMr ? 'अतुल गायकवाड: 9284169779 / 7720879798' : 'Call Atul Gaikwad: 9284169779'}
                 </p>
               </div>
 
@@ -149,7 +141,7 @@ export const IdolDetailModal: React.FC<IdolDetailModalProps> = ({
             className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-amber-950 font-black px-6 py-2.5 rounded-xl shadow-lg transition"
           >
             <Sparkles className="w-4 h-4 fill-amber-950" />
-            <span>{isMr ? 'ही मूर्ती बुक करा (₹५०० टोकन)' : 'Book This Idol (₹500 Token)'}</span>
+            <span>{isMr ? 'ही मूर्ती बुक करा' : 'Book This Murti'}</span>
           </button>
         </div>
 

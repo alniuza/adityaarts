@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookingRecord, Language } from '../types';
-import { X, Printer, Share2, CheckCircle2, MapPin, Phone, Sparkles } from 'lucide-react';
+import { X, Printer, Share2, CheckCircle2, MapPin } from 'lucide-react';
 
 interface BookingReceiptModalProps {
   booking: BookingRecord | null;
@@ -21,7 +21,7 @@ export const BookingReceiptModal: React.FC<BookingReceiptModalProps> = ({
   };
 
   const whatsappMessage = encodeURIComponent(
-    `|| गणपती बाप्पा मोरया ||\nमाझे गणपती बुकिंग यशस्वी झाले आहे!\nबुकिंग ID: ${booking.bookingId}\nमूर्ती: ${booking.idolNameMr}\nटोकन जमा: ₹${booking.tokenAmount}\nबाकी रक्कम: ₹${booking.balanceAmount}\nपिकअप तारीख: ${booking.pickupDate}\nआदित्य गणराज आर्ट्स नाशिक`
+    `|| गणपती बाप्पा मोरया ||\nमाझे गणपती बुकिंग यशस्वी झाले आहे!\nबुकिंग ID: ${booking.bookingId}\nमूर्ती: ${booking.idolNameMr}\nटोकन जमा: ₹${booking.tokenAmount}\nपिकअप तारीख: ${booking.pickupDate}\nआदित्य गणराज आर्ट्स नाशिक`
   );
 
   return (
@@ -99,21 +99,16 @@ export const BookingReceiptModal: React.FC<BookingReceiptModalProps> = ({
 
           </div>
 
-          {/* Financial Breakdown Table */}
+          {/* Token Breakdown Table */}
           <div className="bg-amber-950 print:bg-white rounded-xl border border-amber-600/40 print:border-gray-300 p-4 text-xs space-y-2">
             <div className="flex justify-between py-1 border-b border-amber-800/40 print:border-gray-200">
-              <span className="text-amber-300 print:text-gray-600">{isMr ? 'मूर्तीची एकूण रक्कम (Total Amount):' : 'Total Idol Price:'}</span>
-              <span className="font-bold text-amber-100 print:text-gray-900">₹{booking.totalPrice.toLocaleString('en-IN')}</span>
+              <span className="text-emerald-400 print:text-green-700 font-bold">{isMr ? 'जमा ऑनलाईन टोकन (Advance Token Paid):' : 'Advance Token Paid:'}</span>
+              <span className="font-bold text-emerald-400 print:text-green-700 text-base">₹{booking.tokenAmount.toLocaleString('en-IN')}</span>
             </div>
 
-            <div className="flex justify-between py-1 border-b border-amber-800/40 print:border-gray-200">
-              <span className="text-emerald-400 print:text-green-700 font-bold">{isMr ? 'जमा ॲडव्हान्स टोकन (Advance Paid):' : 'Advance Paid:'}</span>
-              <span className="font-bold text-emerald-400 print:text-green-700">₹{booking.tokenAmount.toLocaleString('en-IN')}</span>
-            </div>
-
-            <div className="flex justify-between py-1 pt-2 font-extrabold text-sm">
-              <span className="text-yellow-400 print:text-red-700">{isMr ? 'स्टॉलवर देय बाकी रक्कम (Balance Payable):' : 'Balance Payable at Stall:'}</span>
-              <span className="text-yellow-400 print:text-red-700 text-base">₹{booking.balanceAmount.toLocaleString('en-IN')}</span>
+            <div className="flex justify-between py-1 pt-1 text-amber-300 text-[11px]">
+              <span>{isMr ? 'पेमेंट पद्धत:' : 'Payment Mode:'}</span>
+              <span className="font-bold text-amber-100">{booking.paymentMode}</span>
             </div>
           </div>
 

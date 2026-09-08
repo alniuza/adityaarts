@@ -68,8 +68,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       address: address.trim(),
       pickupDate,
       tokenAmount,
-      totalPrice: idol.price,
-      balanceAmount: Math.max(0, idol.price - tokenAmount),
+      totalPrice: idol.price || 0,
+      balanceAmount: 0,
       paymentMode,
       paymentStatus: 'Advance Paid',
       bookingDate: new Date().toLocaleDateString('mr-IN'),
@@ -134,8 +134,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
           </div>
           <div className="text-right">
-            <span className="text-xs text-amber-300">{isMr ? 'किंमत:' : 'Price:'}</span>
-            <p className="text-base font-black text-yellow-400">₹{idol.price.toLocaleString('en-IN')}</p>
+            <span className="text-xs text-emerald-400 font-bold">
+              {isMr ? 'बुकिंग उघडे' : 'Booking Open'}
+            </span>
           </div>
         </div>
 
@@ -235,13 +236,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </button>
               ))}
             </div>
-
-            <div className="flex justify-between text-[11px] text-amber-300/80 pt-1">
-              <span>{isMr ? 'शिल्लक रक्कम (बाकी):' : 'Remaining Balance:'}</span>
-              <span className="font-bold text-amber-100">
-                ₹{Math.max(0, idol.price - tokenAmount).toLocaleString('en-IN')}
-              </span>
-            </div>
           </div>
 
           {/* Payment Method */}
@@ -311,7 +305,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               <Sparkles className="w-4 h-4 fill-amber-950" />
               <span>
                 {isSubmitting
-                  ? (isMr ? 'बुकिंग सेव्ह होत आहे...' : 'Saving to MongoDB Database...')
+                  ? (isMr ? 'बुकिंग सेव्ह होत आहे...' : 'Saving to Database...')
                   : (isMr ? 'बुकिंग पूर्ण करा व पावती मिळवा' : 'Confirm Booking & Get Receipt')}
               </span>
             </button>
