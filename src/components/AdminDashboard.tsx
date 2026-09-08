@@ -268,19 +268,44 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {activeTab === 'bookings' && (
             <div className="space-y-4">
               
+              {/* Live Pending Verification Banner */}
+              {bookings.filter(b => b.status === 'Pending Verification').length > 0 && (
+                <div className="bg-yellow-950/90 border border-yellow-500/70 p-3 rounded-xl flex items-center justify-between gap-3 text-xs text-yellow-200 animate-pulse">
+                  <div className="flex items-center gap-2 font-bold">
+                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400 shrink-0"></span>
+                    <span>
+                      {isMr
+                        ? `🔴 ${bookings.filter(b => b.status === 'Pending Verification').length} नवीन ऑनलाईन पेमेंट पडताळणी प्रलंबित! GPay/PhonePe मध्ये UTR तपासून कन्फर्म करा.`
+                        : `🔴 ${bookings.filter(b => b.status === 'Pending Verification').length} New Payment Verifications Pending! Check UTR and click Approve.`}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setBookingFilter('Pending Verification')}
+                    className="bg-yellow-500 hover:bg-yellow-400 text-yellow-950 font-black px-3 py-1 rounded text-[11px] shrink-0"
+                  >
+                    {isMr ? 'पहा' : 'View'}
+                  </button>
+                </div>
+              )}
+
               {/* Filter */}
-              <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center justify-between text-xs flex-wrap gap-2">
                 <span className="text-amber-300 font-bold">{isMr ? 'बुकिंग फिल्टर:' : 'Filter:'}</span>
-                <div className="flex gap-1">
-                  {['All', 'Confirmed', 'Ready for Pickup', 'Completed'].map((st) => (
+                <div className="flex gap-1 flex-wrap">
+                  {['All', 'Pending Verification', 'Confirmed', 'Ready for Pickup', 'Completed'].map((st) => (
                     <button
                       key={st}
                       onClick={() => setBookingFilter(st)}
                       className={`px-3 py-1 rounded text-[11px] font-bold ${
-                        bookingFilter === st ? 'bg-amber-500 text-amber-950' : 'bg-amber-900/40 text-amber-200'
+                        bookingFilter === st
+                          ? 'bg-amber-500 text-amber-950'
+                          : st === 'Pending Verification'
+                          ? 'bg-yellow-900/60 text-yellow-300 border border-yellow-600/40'
+                          : 'bg-amber-900/40 text-amber-200'
                       }`}
                     >
-                      {st}
+                      {st === 'Pending Verification' && isMr ? 'पडताळणी प्रलंबित' : st}
+                      {st === 'Pending Verification' && ` (${bookings.filter(b => b.status === 'Pending Verification').length})`}
                     </button>
                   ))}
                 </div>
@@ -297,6 +322,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <tr className="bg-amber-900/60 border-b border-amber-700/40 text-amber-300">
                         <th className="p-2.5 font-bold">ID</th>
                         <th className="p-2.5 font-bold">{isMr ? 'ग्राहक & फोन' : 'Customer'}</th>
+                        <th className="p-2.5 font-bold">{isMr ? 'UTR / Ref ID' : 'UTR No.'}</th>
                         <th className="p-2.5 font-bold">{isMr ? 'मूर्ती नाव' : 'Idol'}</th>
                         <th className="p-2.5 font-bold">{isMr ? 'टोकन रक्कम' : 'Token'}</th>
                         <th className="p-2.5 font-bold">{isMr ? 'पिकअप तारीख' : 'Pickup Date'}</th>
@@ -312,6 +338,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             <p className="font-bold text-amber-100">{b.customerName}</p>
                             <p className="text-[10px] text-amber-300/80 font-mono">{b.phone}</p>
                           </td>
+                          <td className="p-2.5 font-mono">
+                            <span className="text-yellow-300 font-extrabold text-[11px] block">{b.utrNumber || 'N/A'}</span>
+                            <span className="text-[9px] text-amber-400/70">{b.paymentMode}</span>
+                          </td>
                           <td className="p-2.5">
                             <p className="font-medium text-amber-200">{isMr ? b.idolNameMr : b.idolNameEn}</p>
                           </td>
@@ -321,12 +351,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           <td className="p-2.5">{b.pickupDate}</td>
                           <td className="p-2.5">
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                              b.status === 'Completed' ? 'bg-emerald-900 text-emerald-300' : 'bg-amber-900 text-yellow-300'
+                              b.status === 'Completed'
+                                ? 'bg-emerald-900 text-emerald-300'
+                                : b.status === 'Pending Verification'
+                                ? 'bg-yellow-950 text-yellow-300 border border-yellow-500/50 animate-pulse'
+                                : b.status === 'Confirmed'
+                                ? 'bg-emerald-950 text-emerald-300'
+                                : 'bg-amber-900 text-yellow-300'
                             }`}>
-                              {b.status}
+                              {b.status === 'Pending Verification' ? (isMr ? 'पडताळणी प्रलंबित' : 'Pending Verification') : b.status}
                             </span>
                           </td>
-                          <td className="p-2.5 flex items-center gap-1">
+                          <td className="p-2.5 flex items-center gap-1 flex-wrap">
                             <button
                               onClick={() => onSelectBookingReceipt(b)}
                               className="p-1 bg-amber-800 hover:bg-amber-700 text-amber-200 rounded"
@@ -335,10 +371,29 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                               <Eye className="w-3.5 h-3.5" />
                             </button>
 
+                            {b.status === 'Pending Verification' && (
+                              <>
+                                <button
+                                  onClick={() => handleStatusChange(b.bookingId, 'Confirmed')}
+                                  className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] rounded font-black shadow"
+                                  title="Approve Payment"
+                                >
+                                  {isMr ? '✓ कन्फर्म' : 'Approve'}
+                                </button>
+                                <button
+                                  onClick={() => handleStatusChange(b.bookingId, 'Cancelled')}
+                                  className="px-1.5 py-1 bg-red-900/80 hover:bg-red-800 text-red-200 text-[10px] rounded font-bold"
+                                  title="Reject Payment"
+                                >
+                                  {isMr ? '✕ नाकारा' : 'Reject'}
+                                </button>
+                              </>
+                            )}
+
                             {b.status === 'Confirmed' && (
                               <button
                                 onClick={() => handleStatusChange(b.bookingId, 'Ready for Pickup')}
-                                className="px-2 py-0.5 bg-emerald-700 text-white text-[10px] rounded font-bold"
+                                className="px-2 py-0.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[10px] rounded font-bold"
                               >
                                 {isMr ? 'रेडी' : 'Ready'}
                               </button>
@@ -347,7 +402,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                             {b.status === 'Ready for Pickup' && (
                               <button
                                 onClick={() => handleStatusChange(b.bookingId, 'Completed')}
-                                className="px-2 py-0.5 bg-blue-700 text-white text-[10px] rounded font-bold"
+                                className="px-2 py-0.5 bg-blue-700 hover:bg-blue-600 text-white text-[10px] rounded font-bold"
                               >
                                 {isMr ? 'पूर्ण' : 'Done'}
                               </button>

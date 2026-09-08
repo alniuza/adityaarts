@@ -40,7 +40,8 @@ export interface BookingRecord {
   paymentMode: 'UPI' | 'Cash at Stall';
   paymentStatus: 'Advance Paid' | 'Fully Paid';
   bookingDate: string;
-  status: 'Confirmed' | 'Ready for Pickup' | 'Completed' | 'Cancelled';
+  utrNumber?: string;
+  status: 'Pending Verification' | 'Confirmed' | 'Ready for Pickup' | 'Completed' | 'Cancelled';
 }
 
 export interface FilterState {

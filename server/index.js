@@ -60,7 +60,8 @@ const bookingSchema = new mongoose.Schema(
     paymentMode: { type: String, default: 'UPI' },
     paymentStatus: { type: String, default: 'Advance Paid' },
     bookingDate: { type: String, required: true },
-    status: { type: String, default: 'Confirmed' }
+    utrNumber: { type: String, default: '' },
+    status: { type: String, default: 'Pending Verification' }
   },
   { timestamps: true }
 );
@@ -248,6 +249,20 @@ app.post('/api/bookings', async (req, res) => {
       { id: req.body.idolId },
       { $inc: { bookedCount: 1 } }
     );
+
+    // System Backend Alert Dispatch
+    console.log(`🔔 [SYSTEM BACKEND ALERT] New Booking ${saved.bookingId} received for ${saved.customerName} (UTR: ${saved.utrNumber || 'N/A'})`);
+    if (process.env.ADMIN_WEBHOOK_URL) {
+      fetch(process.env.ADMIN_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'NEW_BOOKING_ALERT',
+          adminPhone: '9284169779',
+          booking: saved
+        })
+      }).catch(err => console.error('Webhook error:', err));
+    }
 
     res.status(201).json(saved);
   } catch (err) {

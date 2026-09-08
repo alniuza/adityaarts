@@ -136,8 +136,21 @@ export const BookingReceiptModal: React.FC<BookingReceiptModalProps> = ({
             </div>
 
             <div className="flex justify-between py-1 pt-1 text-amber-300 text-[11px]">
-              <span>{isMr ? 'पेमेंट पद्धत:' : 'Payment Mode:'}</span>
-              <span className="font-bold text-amber-100">{booking.paymentMode}</span>
+              <span>{isMr ? 'पेमेंट पद्धत & UTR No.:' : 'Payment Mode & UTR:'}</span>
+              <span className="font-bold text-yellow-300 font-mono">{booking.paymentMode} {booking.utrNumber ? `(UTR: ${booking.utrNumber})` : ''}</span>
+            </div>
+
+            <div className="flex justify-between py-1 border-t border-amber-800/40 text-[11px]">
+              <span>{isMr ? 'पडताळणी स्थिती (Status):' : 'Status:'}</span>
+              <span className={`font-bold ${
+                booking.status === 'Pending Verification'
+                  ? 'text-yellow-400 animate-pulse'
+                  : 'text-emerald-400'
+              }`}>
+                {booking.status === 'Pending Verification'
+                  ? (isMr ? '🟡 पेमेंट पडताळणी प्रलंबित' : '🟡 Pending Verification')
+                  : (isMr ? '🟢 बुकिंग कन्फर्म झाले' : '🟢 Confirmed')}
+              </span>
             </div>
           </div>
 

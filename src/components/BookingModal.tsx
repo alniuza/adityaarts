@@ -29,6 +29,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   });
   const [tokenAmount, setTokenAmount] = useState<number>(500);
   const [paymentMode, setPaymentMode] = useState<'UPI' | 'Cash at Stall'>('UPI');
+  const [utrNumber, setUtrNumber] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -41,6 +42,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
     if (phone.length < 10) {
       setErrorMsg(isMr ? 'कृपया १० अंकी वैध फोन नंबर टाका.' : 'Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    if (paymentMode === 'UPI' && (!utrNumber.trim() || utrNumber.trim().length < 6)) {
+      setErrorMsg(isMr ? 'कृपया तुमच्या पेमेंटचा १२ अंकी UTR / Ref ID नंबर टाका.' : 'Please enter 12-digit UTR / Ref ID number.');
       return;
     }
 
@@ -73,7 +79,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       paymentMode,
       paymentStatus: 'Advance Paid',
       bookingDate: new Date().toLocaleDateString('mr-IN'),
-      status: 'Confirmed'
+      utrNumber: utrNumber.trim(),
+      status: paymentMode === 'UPI' ? 'Pending Verification' : 'Confirmed'
     };
 
     // Save to MongoDB Cloud Database API
@@ -312,6 +319,24 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               <p className="text-[10px] text-amber-300/80 font-mono">
                 UPI ID: 9284169779@upi (Atul Gaikwad)
               </p>
+
+              {/* UTR Input Field */}
+              <div className="pt-2 text-left space-y-1">
+                <label className="block text-[11px] font-bold text-yellow-300">
+                  {isMr ? 'पेमेंट केल्यावर मिळणारा 12-Digit UTR / Ref No. टाका:' : 'Enter 12-Digit UTR / Ref No. after payment:'}
+                </label>
+                <input
+                  type="text"
+                  maxLength={18}
+                  placeholder={isMr ? 'उदा. 423812345678 (GPay / PhonePe / Paytm)' : 'e.g. 423812345678'}
+                  value={utrNumber}
+                  onChange={(e) => setUtrNumber(e.target.value)}
+                  className="w-full bg-amber-950 border border-amber-500/60 rounded-xl px-3 py-2 text-xs text-yellow-200 placeholder-amber-400/50 font-mono focus:outline-none focus:border-amber-300"
+                />
+                <p className="text-[10px] text-amber-300/80 leading-tight">
+                  💡 {isMr ? 'नोट: UTR नंबर टाकल्याने स्टॉल मालक तुमच्या पेमेंटची पडताळणी करून बुकिंग कन्फर्म करतील.' : 'Note: Entering UTR allows stall owner to verify payment and approve booking.'}
+                </p>
+              </div>
             </div>
           )}
 
