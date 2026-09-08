@@ -41,7 +41,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     category: 'Home' as const,
     price: 3000,
     originalPrice: 3500,
-    image: 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&q=80&w=800',
+    image: '/idols/murti_page_1.jpg',
     descriptionMr: 'नवीन सुबक गणेश मूर्ती, आकर्षक रंगसंगती.',
     descriptionEn: 'New handcrafted Ganesh idol with fine detailing.',
     stallNo: 'स्टॉल नं. A-3',
@@ -49,10 +49,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   });
 
   useEffect(() => {
-    // Fetch bookings from MongoDB Cloud Database API
+    // Fetch bookings from MongoDB Cloud Database API via Vercel
     const fetchBookings = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/bookings');
+        const res = await fetch('/api/bookings');
         if (res.ok) {
           const dbBookings: BookingRecord[] = await res.json();
           if (dbBookings && dbBookings.length > 0) {
@@ -91,7 +91,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
     // Update in MongoDB API
     try {
-      await fetch(`http://localhost:5000/api/bookings/${bookingId}/status`, {
+      await fetch(`/api/bookings/${bookingId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus })
@@ -113,7 +113,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
     // Save to MongoDB API
     try {
-      await fetch('http://localhost:5000/api/idols', {
+      await fetch('/api/idols', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(created)

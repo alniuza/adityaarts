@@ -78,14 +78,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
     // Save to MongoDB Cloud Database API
     try {
-      const response = await fetch('http://localhost:5000/api/bookings', {
+      const response = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newBooking)
       });
       if (response.ok) {
         const savedDB = await response.json();
-        console.log('Saved to MongoDB Cloud:', savedDB);
+        console.log('Saved to MongoDB Cloud via Vercel:', savedDB);
       }
     } catch (err) {
       console.log('MongoDB API offline, saving to LocalStorage fallback.');

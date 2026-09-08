@@ -16,15 +16,13 @@ import { Footer } from './components/Footer';
 
 export function App() {
   const [language, setLanguage] = useState<Language>('mr');
-  
-  // Idols state stored in state & synced with MongoDB / LocalStorage
   const [idols, setIdols] = useState<GanpatiIdol[]>(INITIAL_IDOLS);
 
   useEffect(() => {
-    // Fetch from MongoDB Cloud API
+    // Fetch from MongoDB API (works on Vercel & Local)
     const fetchIdolsFromDB = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/idols');
+        const response = await fetch('/api/idols');
         if (response.ok) {
           const dbIdols: GanpatiIdol[] = await response.json();
           if (dbIdols && dbIdols.length > 0) {
@@ -78,9 +76,9 @@ export function App() {
     const updated = idols.map((item) => (item.id === id ? { ...item, isAvailable } : item));
     setIdols(updated);
 
-    // Sync to MongoDB Cloud
+    // Sync to MongoDB Cloud API
     try {
-      await fetch(`http://localhost:5000/api/idols/${id}/availability`, {
+      await fetch(`/api/idols/${id}/availability`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isAvailable })

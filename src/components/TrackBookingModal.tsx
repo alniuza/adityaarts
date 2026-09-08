@@ -29,7 +29,7 @@ export const TrackBookingModal: React.FC<TrackBookingModalProps> = ({
 
     // 1. Try fetching from MongoDB Backend API
     try {
-      const response = await fetch(`http://localhost:5000/api/bookings/track?query=${encodeURIComponent(clean)}`);
+      const response = await fetch(`/api/bookings/track?query=${encodeURIComponent(clean)}`);
       if (response.ok) {
         const dbMatches: BookingRecord[] = await response.json();
         if (dbMatches && dbMatches.length > 0) {
